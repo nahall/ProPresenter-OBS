@@ -1,0 +1,30 @@
+/*
+
+IF YOU'RE NOT FAMILIAR WITH CSS
+
+If you aren't familiar/comfortable with CSS, then I'd highly suggest checking out https://www.w3schools.com/css/default.asp
+I use their database of information on a regular bases, and it can help you get the exact look you want on this
+
+*/
+
+* {
+    padding: 0;
+    margin: 0;
+    color: white;
+    font-size: 10px;
+    font-family: Montserrat, Arial, Helvetica, sans-serif;
+    text-transform: uppercase;
+    text-align: center;
+    overflow: hidden;
+}
+
+#cs {
+    width: 100%;
+    padding: 1em;
+    font-size: 5em;
+    line-height: 1.6em;
+    letter-spacing: 1px;
+    position: absolute;
+    bottom: 0;
+    text-shadow: 2px 2px 4px black;
+}
