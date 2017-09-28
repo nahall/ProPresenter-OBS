@@ -1,75 +1,75 @@
 <!doctype html>
 <html>
-<head>
-<meta charset="UTF-8">
-<script type="text/javascript" src="lib/jquery-1.12.0.min.js"></script>
-<script type="text/javascript" src="lib/jquery.json.min.js"></script>
-<script type="text/javascript" src="lib/jquery.simple.websocket.js"></script>
-<script type="text/javascript" src="config.js"></script>
-<script type="text/javascript">
-	$(document).ready(function() {
-		$('#propresenter_ip').text("ProPresenter at "+ config['propresenter_ip'] +':'+config['propresenter_port']);
-		$('#vmix_ip').text("vMix at "+ config['vmix_ip'] +":"+ config['vmix_port']);
-		$('#vmix_input').text("Controlling vMix Input #"+ config['vmix_input']);
-	});
-	
-	//Connect to ProPresenter Remote Stage Display
-    var webSocket = $.simpleWebSocket({ url: 'ws://'+config['propresenter_ip']+':'+config['propresenter_port']+'/stagedisplay' });
-	
-	//Connect and send the password
-    webSocket.send({"pwd":config['propresenter_password'],"ptl":610,"acn":"ath"}).done(function() {
-        // message send
-		console.log("SENT AUTH");
-    }).fail(function(e) {
-        // error sending
-    });
 
-    // reconnected listening
-    webSocket.listen(function(message) {
-		if (message['acn'] != "vid") {
-			console.log(message);
-		}
-		if (message['acn'] == "fv") {
-			if (message['ary'][0]['txt'] != undefined) {
-				console.log(message['ary']);
-				var text = '';
-				var lyric = '';
-				if (typeof message['ary'][2] !== 'undefined' && message['ary'][2]['txt'] != 'novmix') {
-					lyric = message['ary'][0]['txt'];
-					text = lyric.replaceAll("\n", "%0A").replaceAll("\r", "%0A");
-				}
-				
-				$("#cs").html(lyric.replaceAll("\n","<br>").replaceAll("\r","<br>"));
-				
-				//Send slide data to vMix
-				$.get("http://"+config['vmix_ip']+":"+config['vmix_port']+"/api/?Function=SetText&SelectedIndex=0&Input="+config['vmix_input']+"&Value="+text);
-			}
-		}
-		
-		
-    });
-	
-	//Replace 127.0.0.1:8088 with the IP and Port of your vMix system
-	$.get("http://127.0.0.1:8088/api", function(d) {
-		console.log(d);
-	});
-	
-	
-String.prototype.replaceAll = function(search, replacement) {
-    var target = this;
-    return target.split(search).join(replacement);
-};
-</script>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="stylesheet.css">
+    <script type="text/javascript" src="lib/jquery-1.12.0.min.js"></script>
+    <script type="text/javascript" src="lib/jquery.json.min.js"></script>
+    <script type="text/javascript" src="lib/jquery.simple.websocket.js"></script>
+    <script type="text/javascript" src="config.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#propresenter_ip').text("ProPresenter at " + config['propresenter_ip'] + ':' + config['propresenter_port']);
+        });
+
+        //Connect to ProPresenter Remote Stage Display
+        var webSocket = $.simpleWebSocket({
+            url: 'ws://' + config['propresenter_ip'] + ':' + config['propresenter_port'] + '/stagedisplay'
+        });
+
+        //Connect and send the password
+        webSocket.send({
+            "pwd": config['propresenter_password'],
+            "ptl": 610,
+            "acn": "ath"
+        }).done(function() {
+            // message send
+            console.log("SENT AUTH");
+        }).fail(function(e) {
+            // error sending
+        });
+
+        // reconnected listening
+        webSocket.listen(function(message) {
+            if (message['acn'] != "vid") {
+                console.log(message);
+            }
+            if (message['acn'] == "fv") {
+                if (message['ary'][0]['txt'] != undefined) {
+                    console.log(message['ary']);
+                    var text = '';
+                    var lyric = '';
+                    if (typeof message['ary'][2] !== 'undefined' && message['ary'][2]['txt'] != 'no-obs') {
+                        lyric = message['ary'][0]['txt'];
+                        text = lyric.replaceAll("\n", "%0A").replaceAll("\r", "%0A");
+                    }
+
+                    $("#cs").html(lyric.replaceAll("\n", "<br />").replaceAll("\r", "<br />"));
+                }
+            }
+
+
+        });
+
+
+        String.prototype.replaceAll = function(search, replacement) {
+            var target = this;
+            return target.split(search).join(replacement);
+        };
+    </script>
 </head>
+
 <body>
-	<h1>ProPresenter vMix Bridge</h1>
-	<h3>Configuration</h3>
-	<ul>
-		<li id="propresenter_ip"></li>
-		<li id="vmix_ip"></li>
-		<li id="vmix_input"></li>
-	</ul>
-	<h3>Current Slide</h3>
-	<div id="cs"></div>
+    <div id="cs"></div>
+    <script>
+        $(function() {
+            // checks to see if there is more than two lines by checking number of line breaks
+            if ($("#cs > br").length > 1) {
+                $('#cs br:nth-child(odd)').replaceWith(' ');
+            }
+        });
+    </script>
 </body>
+
 </html>
