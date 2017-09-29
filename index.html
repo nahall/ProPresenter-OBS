@@ -48,6 +48,7 @@
                     $("#cs").html(lyric.replaceAll("\n", "<br />").replaceAll("\r", "<br />"));
 
                     // checks to see if there is more than two lines by checking number of line breaks
+                    // if more than two lines, removes every other line break
                     if ($("#cs > br").length > 1) {
                         $('#cs br:nth-child(odd)').replaceWith(' ');
                     }
