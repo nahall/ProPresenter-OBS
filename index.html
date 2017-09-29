@@ -46,6 +46,11 @@
                     }
 
                     $("#cs").html(lyric.replaceAll("\n", "<br />").replaceAll("\r", "<br />"));
+
+                    // checks to see if there is more than two lines by checking number of line breaks
+                    if ($("#cs > br").length > 1) {
+                        $('#cs br:nth-child(odd)').replaceWith(' ');
+                    }
                 }
             }
 
@@ -62,14 +67,6 @@
 
 <body>
     <div id="cs"></div>
-    <script>
-        $(function() {
-            // checks to see if there is more than two lines by checking number of line breaks
-            if ($("#cs > br").length > 1) {
-                $('#cs br:nth-child(odd)').replaceWith(' ');
-            }
-        });
-    </script>
 </body>
 
 </html>
