@@ -45,7 +45,15 @@
                         text = lyric.replaceAll("\n", "%0A").replaceAll("\r", "%0A");
                     }
 
-                    $("#cs").html(lyric.replaceAll("\n", "<br />").replaceAll("\r", "<br />"));
+                    if (config['fade']){
+                        $("#cs").fadeOut(config["fade_speed"], function(){
+                            $("#cs").html(lyric.replaceAll("\n", "<br />").replaceAll("\r", "<br />"));
+                            $("#cs").fadeIn(config["fade_speed"]);
+                        });
+                    }
+                    else {
+                        $("#cs").html(lyric.replaceAll("\n", "<br />").replaceAll("\r", "<br />"));
+                    }
 
                     // checks to see if there is more than two lines by checking number of line breaks
                     // if more than two lines, removes every other line break
