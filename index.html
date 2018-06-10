@@ -30,6 +30,10 @@
             // error sending
         });
 
+        if (config['fade'] && !config['fade_seed']){
+            config['fade_speed'] = 'fast';
+        }
+
         // reconnected listening
         webSocket.listen(function(message) {
             if (message['acn'] != "vid") {
