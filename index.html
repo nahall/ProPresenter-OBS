@@ -50,7 +50,7 @@
                         text = lyric.replaceAll("\n", "%0A").replaceAll("\r", "%0A");
                     }
 
-                    if (prev_text !== text){
+                    if (prev_text !== text || config['fade_repeated_text']){
                         if (config['fade']){
                             $("#cs").fadeOut(config["fade_speed"], function(){
                                 $("#cs").html(lyric.replaceAll("\n", "<br />").replaceAll("\r", "<br />"));
