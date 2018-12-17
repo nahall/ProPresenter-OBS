@@ -2,9 +2,10 @@
 var config = {
 	//IP and Port for ProPresenter Network Connection
 	//Enable under ProPresenter Preferences -> Network tab
+	//Enable Network and Stage Display App
 	'propresenter_ip' : '192.168.1.4',
-	'propresenter_port' : 60157,
-	'propresenter_password' : 'av',
+	'propresenter_port' : 60157, //port from Network NOT Stage Display App
+	'propresenter_password' : 'av', //password from Stage Display App
 	'fade' : true,
 	'fade_speed' : "fast"
 };
