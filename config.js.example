@@ -7,6 +7,6 @@ var config = {
 	'propresenter_port' : 60157, //port from Network NOT Stage Display App
 	'propresenter_password' : 'av', //password from Stage Display App
 	'fade' : true,
-	'fade_speed' : "fast",
+	'fade_speed' : 200, // milliseconds 600 slow, 400 normal, 200 fast
 	'fade_repeated_text' : true // set true to fade in/out repeated text
 };
