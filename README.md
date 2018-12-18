@@ -1,8 +1,8 @@
 # ProPresenter-OBS
 
-Uses the ProPresenter Stage Display network API to feed current slide text into a OBS browser source lower third.
+Uses the ProPresenter Stage Display websocket to feed current slide text into a OBS browser source lower third.
 
-I happened upon this when the original author posted a link in a Facebook group. I figured I could tear it apart to use for OBS instead of the original vMix use. Please read through the comments in the code to see what info needs changed to match your environment.
+The original code was from https://github.com/cgarwood/ProPresenter-vMix and made for vMix.
 
 In ProPresenter you must Enable Network and Stage Display App under preferences.  Set a password under Stage Display App.
 
