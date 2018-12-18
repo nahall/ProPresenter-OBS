@@ -42,7 +42,7 @@
                     console.log(message['ary']);
                     var text = '';
                     var lyric = '';
-                    if (typeof message['ary'][2] !== 'undefined' && message['ary'][2]['txt'] != 'no-obs') {
+                    if (typeof message['ary'][2] !== 'undefined' && message['ary'][2]['txt'] != config["noText"]) {
                         lyric = message['ary'][0]['txt'];
                         text = lyric.replaceAll("\n", "%0A").replaceAll("\r", "%0A");
                     }
