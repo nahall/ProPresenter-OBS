@@ -9,27 +9,27 @@
     <script type="text/javascript" src="lib/jquery.simple.websocket.js"></script>
     <script type="text/javascript" src="config.js"></script>
     <script type="text/javascript">
-        //Connect to ProPresenter Remote Stage Display
-        var webSocket = $.simpleWebSocket({
-            url: 'ws://' + config['propresenter_ip'] + ':' + config['propresenter_port'] + '/stagedisplay'
-        });
+		//Connect to ProPresenter Remote Stage Display
+		var webSocket = $.simpleWebSocket({
+			url: 'ws://' + config['propresenter_ip'] + ':' + config['propresenter_port'] + '/stagedisplay'
+		});
 
-        //Connect and send the password
-        webSocket.send({
-            "pwd": config['propresenter_password'],
-            "ptl": 610,
-            "acn": "ath"
-        }).done(function() {
-            // message send
-            console.log("SENT AUTH");
-        }).fail(function(e) {
-            // error sending
-        });
+		//Connect and send the password
+		webSocket.send({
+			"pwd": config['propresenter_password'],
+			"ptl": 610,
+			"acn": "ath"
+		}).done(function() {
+			// message send
+			console.log("SENT AUTH");
+		}).fail(function(e) {
+			// error sending
+		});
 
-        prev_text = '';
+		prev_text = '';
 
         // reconnected listening
-        webSocket.listen(function(message) {
+		webSocket.listen(function(message) {
 		
 			/* enable this to view Array of data in the console.
 				if (message['acn'] != "vid") {
@@ -38,16 +38,16 @@
 			*/
 			
 			// only parse fv arrays
-            if (message['acn'] == "fv") {
-                if (message['ary'][0]['txt'] != undefined) {
-                    var text = '';
-                    var lyric = '';
+			if (message['acn'] == "fv") {
+				if (message['ary'][0]['txt'] != undefined) {
+					var text = '';
+					var lyric = '';
 					
 					// check slide note for noText keyword.  If noText is defined dont step into this IF
-                    if (typeof message['ary'][2] !== 'undefined' && message['ary'][2]['txt'] !== config["noText"]) {
-                        lyric = message['ary'][0]['txt'];
+					if (typeof message['ary'][2] !== 'undefined' && message['ary'][2]['txt'] !== config["noText"]) {
+						lyric = message['ary'][0]['txt'];
 						// replace carriage return \r and linefeed \n with <br> global
-                        text = lyric.replace(/\r\n|\n|\r/g, '<br />');
+						text = lyric.replace(/\r\n|\n|\r/g, '<br />');
 					
 						// if fading is true and repeated text is true
 						if (prev_text !== text || config['fade_repeated_text']){
@@ -66,10 +66,10 @@
 					}else{
 						$("#cs").html("");
 					}
-                    prev_text = text;
-                }
-            }
-        });
+					prev_text = text;
+				}
+			}
+		});
     </script>
 </head>
 
