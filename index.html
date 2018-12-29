@@ -2,84 +2,73 @@
 <html>
 
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="stylesheet.css">
-    <script type="text/javascript" src="lib/jquery-1.12.0.min.js"></script>
-    <script type="text/javascript" src="lib/jquery.json.min.js"></script>
-    <script type="text/javascript" src="lib/jquery.simple.websocket.js"></script>
-    <script type="text/javascript" src="config.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#propresenter_ip').text("ProPresenter at " + config['propresenter_ip'] + ':' + config['propresenter_port']);
-        });
+<meta charset="UTF-8">
+<link rel="stylesheet" href="stylesheet.css">
+<script type="text/javascript" src="lib/jquery-1.12.0.min.js"></script>
+<script type="text/javascript" src="lib/jquery.json.min.js"></script>
+<script type="text/javascript" src="lib/jquery.simple.websocket.js"></script>
+<script type="text/javascript" src="config.js"></script>
+<script type="text/javascript">
+//Connect to ProPresenter Remote Stage Display
+var webSocket = $.simpleWebSocket({
+	url: 'ws://' + config['propresenter_ip'] + ':' + config['propresenter_port'] + '/stagedisplay'
+});
 
-        //Connect to ProPresenter Remote Stage Display
-        var webSocket = $.simpleWebSocket({
-            url: 'ws://' + config['propresenter_ip'] + ':' + config['propresenter_port'] + '/stagedisplay'
-        });
+//Connect and send the password
+webSocket.send({
+	"pwd": config['propresenter_password'],
+	"ptl": 610,
+	"acn": "ath"
+}).done(function() {
+	// message send
+	console.log("SENT AUTH");
+}).fail(function(e) {
+	// error sending
+});
 
-        //Connect and send the password
-        webSocket.send({
-            "pwd": config['propresenter_password'],
-            "ptl": 610,
-            "acn": "ath"
-        }).done(function() {
-            // message send
-            console.log("SENT AUTH");
-        }).fail(function(e) {
-            // error sending
-        });
+prev_text = '';
 
-        if (config['fade'] && !config['fade_seed']){
-            config['fade_speed'] = 'fast';
-        }
-        prev_text = '';
+// reconnected listening
+webSocket.listen(function(message) {
 
-        // reconnected listening
-        webSocket.listen(function(message) {
-            if (message['acn'] != "vid") {
-                console.log(message);
-            }
-            if (message['acn'] == "fv") {
-                if (message['ary'][0]['txt'] != undefined) {
-                    console.log(message['ary']);
-                    var text = '';
-                    var lyric = '';
-                    if (typeof message['ary'][2] !== 'undefined' && message['ary'][2]['txt'] != 'no-obs') {
-                        lyric = message['ary'][0]['txt'];
-                        text = lyric.replaceAll("\n", "%0A").replaceAll("\r", "%0A");
-                    }
-
-                    if (prev_text !== text){
-                        if (config['fade']){
-                            $("#cs").fadeOut(config["fade_speed"], function(){
-                                $("#cs").html(lyric.replaceAll("\n", "<br />").replaceAll("\r", "<br />"));
-                                $("#cs").fadeIn(config["fade_speed"]);
-                             });
-                        }
-                        else {
-                            $("#cs").html(lyric.replaceAll("\n", "<br />").replaceAll("\r", "<br />"));
-                        }
-                        // checks to see if there is more than two lines by checking number of line breaks
-                        // if more than two lines, removes every other line break
-                        if ($("#cs > br").length > 1) {
-                            $('#cs br:nth-child(odd)').replaceWith(' ');
-                        }
-                    }
-
-                    prev_text = text;
-                }
-            }
-
-
-        });
-
-
-        String.prototype.replaceAll = function(search, replacement) {
-            var target = this;
-            return target.split(search).join(replacement);
-        };
-    </script>
+	/* enable this to view Array of data in the console.
+		if (message['acn'] != "vid") {
+			console.log(message);
+		}
+	*/
+	
+	// only parse fv arrays
+	if (message['acn'] == "fv") {
+		if (message['ary'][0]['txt'] != undefined) {
+			var text = '';
+			
+			// check slide note for noText keyword.  If noText is defined dont step into this IF
+			if (typeof message['ary'][2] !== 'undefined' && message['ary'][2]['txt'] !== config["noText"]) {
+				// replace carriage return \r and linefeed \n with <br> global
+				text = message['ary'][0]['txt'].replace(/\r\n|\n|\r/g, '<br />');
+			
+				// if fading is true and repeated text is true
+				if (prev_text !== text || config['fade_repeated_text']){
+					// if fading is true
+					if (config['fade']){
+						$("#cs").fadeOut(config["fade_speed"], function(){
+							$("#cs").html(text);
+							$("#cs").fadeIn(config["fade_speed"]);
+						 });
+					// no fade
+					}else{
+						$("#cs").html(text);
+					}
+				}
+			// noText keyword was defined on slide note so set #cs to blank
+			}else{
+				$("#cs").html("");
+			}
+			prev_text = text;
+		}
+	}
+});
+</script>
 </head>
 
 <body>

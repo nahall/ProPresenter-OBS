@@ -2,9 +2,12 @@
 var config = {
 	//IP and Port for ProPresenter Network Connection
 	//Enable under ProPresenter Preferences -> Network tab
+	//Enable Network and Stage Display App
 	'propresenter_ip' : '192.168.1.4',
-	'propresenter_port' : 60157,
-	'propresenter_password' : 'av',
+	'propresenter_port' : 60157, //port from Network NOT Stage Display App
+	'propresenter_password' : 'av', //password from Stage Display App
 	'fade' : true,
-	'fade_speed' : "fast"
+	'fade_speed' : 200, // milliseconds 600 slow, 400 normal, 200 fast
+	'fade_repeated_text' : true, // set true to fade in/out repeated text
+	'noText' : 'no-obs' // use this word in the slide notes to prevent text being sent to OBS
 };
