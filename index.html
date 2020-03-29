@@ -31,15 +31,14 @@ prev_text = '';
 // reconnected listening
 webSocket.listen(function(message) {
 
-	/* enable this to view Array of data in the console.
-		if (message['acn'] != "vid") {
-			console.log(message);
-		}
-	*/
+	// /* enable this to view Array of data in the console.
+	// if (message['acn'] != "vid") {
+	// 	console.log(message);
+	// }
 	
 	// only parse fv arrays
 	if (message['acn'] == "fv") {
-		if (message['ary'][0]['txt'] != undefined) {
+		if (message['ary'][0]['txt'] != undefined && message['ary'][0]['acn'] === 'cs') {
 			var text = '';
 			
 			// check slide note for noText keyword.  If noText is defined dont step into this IF
