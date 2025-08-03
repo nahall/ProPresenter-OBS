@@ -13,25 +13,26 @@ I use their database of information on a regular bases, and it can help you get 
     padding: 0;
     margin: 0;
     color: white;
-    /*
     font-size: 10px;
     font-family: Montserrat, Arial, Helvetica, sans-serif;
     text-transform: uppercase;
-    */
-    font-size: 18px;
-    font-family: Brandon Grotesque, Montserrat, Arial, Helvetica, sans-serif;
     text-align: center;
     overflow: hidden;
 }
 
 #cs {
     width: 100%;
-    /*padding: 0.5em 0;*/
-    font-size: 5em;
+    padding: 0.5em 0;
+    font-size: 3em;
     line-height: 1.6em;
     letter-spacing: 1px;
     position: absolute;
     bottom: 0;
     text-shadow: 3px 3px 4px black;
-    background-color: rgba(0, 0, 0, 0.6);
+	background: rgba(0, 0, 0, 0.8);
+}
+
+/* This hides the div when empty to remove those ugly black bars. */
+#cs:empty {
+    visibility: hidden;
 }
