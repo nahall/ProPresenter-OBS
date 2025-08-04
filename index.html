@@ -24,12 +24,13 @@ function processProPresenterMessage(message) {
     if (message['acn'] == "fv") {
         if (message['ary'][0]['txt'] != undefined && message['ary'][0]['acn'] === 'cs') {
             var text = '';
-	
+
             // check slide note for noText keyword.  If noText is defined dont step into this IF
             if (typeof message['ary'][2] !== 'undefined' && message['ary'][2]['txt'] !== config["noText"]) {
+                // remove newlines at beginning and end of line
                 // replace carriage return \r and linefeed \n with <br> global
-                text = message['ary'][0]['txt'].replace(/\r\n|\n|\r/g, '<br />');
-	
+                text = message['ary'][0]['txt'].replace(/^\s+|\s+$/g, "").replace(/\r\n|\n|\r/g, '<br />');
+
                 // if fading is true and repeated text is true
                 if (prev_text !== text || config['fade_repeated_text']) {
                     // if fading is true
